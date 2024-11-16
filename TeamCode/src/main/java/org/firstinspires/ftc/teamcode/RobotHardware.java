@@ -32,7 +32,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.util.Range;
 
 /*
  * This file works in conjunction with the External Hardware Class sample called: ConceptExternalHardwareClass.java
@@ -54,6 +53,14 @@ public class RobotHardware {
     public DcMotor frontRightDrive  = null;
     public DcMotor backLeftDrive  = null;
     public DcMotor backRightDrive  = null;
+    public DcMotor lift  = null;
+    public DcMotor arm  = null;
+    public Servo clawLeft  = null;
+    public Servo clawRight  = null;
+
+    public static final double CLAW_LEFT_START       =  0.2 ;
+    public static final double CLAW_RIGHT_START       =  0.8 ;
+
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode) {
@@ -66,11 +73,13 @@ public class RobotHardware {
      * All of the hardware devices are accessed via the hardware map, and initialized.
      */
     public void init()    {
-        // Define and Initialize Motors (note: need to use reference to actual OpMode).
+        // Define and Initialize DC Motors (note: need to use reference to actual OpMode).
         frontLeftDrive  = myOpMode.hardwareMap.get(DcMotor.class, "FL_drive");
         frontRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "FR_drive");
         backLeftDrive = myOpMode.hardwareMap.get(DcMotor.class, "BL_drive");
         backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "BR_drive");
+        backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "lift");
+        backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "arm");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -79,6 +88,13 @@ public class RobotHardware {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+
+        // Define and initialize ALL installed servos.
+        clawLeft = myOpMode.hardwareMap.get(Servo.class, "claw_left");
+        clawRight = myOpMode.hardwareMap.get(Servo.class, "claw_right");
+
+        clawLeft.setPosition(CLAW_LEFT_START);
+        clawRight.setPosition(CLAW_RIGHT_START);
 
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
