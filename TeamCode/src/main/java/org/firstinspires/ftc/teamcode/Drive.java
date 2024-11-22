@@ -9,10 +9,7 @@ public class Drive extends LinearOpMode {
 
     // Define drive speed
     public static final double DRIVE_SPEED = 0.8;
-    public static final double CLAW_LEFT_OPEN       =  0.2 ;
-    public static final double CLAW_RIGHT_OPEN       =  0.8 ;
-    public static final double CLAW_LEFT_CLOSED       =  0.5 ;
-    public static final double CLAW_RIGHT_CLOSED      =  0.5 ;
+    public static final double ARM_SPEED = 0.7;
 
     // Create a RobotHardware object to be used to access robot hardware.
     // Prefix any hardware functions with "robot." to access this class.
@@ -49,16 +46,14 @@ public class Drive extends LinearOpMode {
             robot.lift.setPower(gamepad2.left_stick_y);
 
             //Control arm with right stick up and down
-            robot.arm.setPower(gamepad2.right_stick_y);
+            robot.arm.setPower(ARM_SPEED * gamepad2.right_stick_y);
 
             //Open and close claw with right and left bumpers
             if (gamepad2.right_bumper) {//right bumper closes
-                robot.clawLeft.setPosition(CLAW_LEFT_CLOSED);
-                robot.clawRight.setPosition(CLAW_RIGHT_CLOSED);
+                robot.claw.setPosition(robot.CLAW_CLOSED);
             }
             else if (gamepad2.left_bumper) {//left bumper opens
-                robot.clawLeft.setPosition(CLAW_LEFT_OPEN);
-                robot.clawRight.setPosition(CLAW_RIGHT_OPEN);
+                robot.claw.setPosition(robot.CLAW_OPEN);
             }
 
             // Send telemetry messages to explain controls and show robot status

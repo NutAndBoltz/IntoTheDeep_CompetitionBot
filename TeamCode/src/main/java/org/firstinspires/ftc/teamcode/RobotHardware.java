@@ -55,12 +55,10 @@ public class RobotHardware {
     public DcMotor backRightDrive  = null;
     public DcMotor lift  = null;
     public DcMotor arm  = null;
-    public Servo clawLeft  = null;
-    public Servo clawRight  = null;
+    public Servo claw  = null;
 
-    public static final double CLAW_LEFT_START       =  0.2 ;
-    public static final double CLAW_RIGHT_START       =  0.8 ;
-
+    public static final double CLAW_OPEN       =  0.2 ;
+    public static final double CLAW_CLOSED     =  0.5 ;
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode) {
@@ -78,8 +76,8 @@ public class RobotHardware {
         frontRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "FR_drive");
         backLeftDrive = myOpMode.hardwareMap.get(DcMotor.class, "BL_drive");
         backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "BR_drive");
-        backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "lift");
-        backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "arm");
+        lift = myOpMode.hardwareMap.get(DcMotor.class, "lift");
+        arm = myOpMode.hardwareMap.get(DcMotor.class, "arm");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -90,11 +88,8 @@ public class RobotHardware {
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Define and initialize ALL installed servos.
-        clawLeft = myOpMode.hardwareMap.get(Servo.class, "claw_left");
-        clawRight = myOpMode.hardwareMap.get(Servo.class, "claw_right");
-
-        clawLeft.setPosition(CLAW_LEFT_START);
-        clawRight.setPosition(CLAW_RIGHT_START);
+        claw = myOpMode.hardwareMap.get(Servo.class, "claw");
+        claw.setPosition(CLAW_OPEN);
 
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
