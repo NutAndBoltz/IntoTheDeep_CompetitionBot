@@ -51,14 +51,22 @@ public class RobotHardware {
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
     public DcMotor frontLeftDrive   = null;
     public DcMotor frontRightDrive  = null;
-    public DcMotor backLeftDrive  = null;
-    public DcMotor backRightDrive  = null;
-    public DcMotor lift  = null;
-    public DcMotor arm  = null;
-    public Servo claw  = null;
+    public DcMotor backLeftDrive    = null;
+    public DcMotor backRightDrive   = null;
+    public DcMotor linearSlide      = null;
+    public Servo slideClawServo     = null;
+    public Servo bucketServo        = null;
+    public Servo armServo           = null;
+    public Servo clawServo          = null;
 
-    public static final double CLAW_OPEN       =  0.2 ;
-    public static final double CLAW_CLOSED     =  0.5 ;
+    public static final double SLIDE_CLAW_OPEN    = 0.1;
+    public static final double SLIDE_CLAW_CLOSED  = 0.4;
+    public static final double BUCKET_UP          = 0.8;
+    public static final double BUCKET_DOWN        = 0.2;
+    public static final double ARM_UP             = 0.9;
+    public static final double ARM_DOWN           = 0.1;
+    public static final double CLAW_OPEN          = 0.7;
+    public static final double CLAW_CLOSED        = 0.3;
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode) {
@@ -71,13 +79,12 @@ public class RobotHardware {
      * All of the hardware devices are accessed via the hardware map, and initialized.
      */
     public void init()    {
-        // Define and Initialize DC Motors (note: need to use reference to actual OpMode).
+        // Define and Initialize Motors (note: need to use reference to actual OpMode).
         frontLeftDrive  = myOpMode.hardwareMap.get(DcMotor.class, "FL_drive");
         frontRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "FR_drive");
-        backLeftDrive = myOpMode.hardwareMap.get(DcMotor.class, "BL_drive");
-        backRightDrive = myOpMode.hardwareMap.get(DcMotor.class, "BR_drive");
-        lift = myOpMode.hardwareMap.get(DcMotor.class, "lift");
-        arm = myOpMode.hardwareMap.get(DcMotor.class, "arm");
+        backLeftDrive   = myOpMode.hardwareMap.get(DcMotor.class, "BL_drive");
+        backRightDrive  = myOpMode.hardwareMap.get(DcMotor.class, "BR_drive");
+        linearSlide     = myOpMode.hardwareMap.get(DcMotor.class, "linear_slide");
 
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
@@ -86,10 +93,19 @@ public class RobotHardware {
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
+        linearSlide.setDirection(DcMotor.Direction.FORWARD);
 
         // Define and initialize ALL installed servos.
-        claw = myOpMode.hardwareMap.get(Servo.class, "claw");
-        claw.setPosition(CLAW_OPEN);
+
+        slideClawServo  = myOpMode.hardwareMap.get(Servo.class, "slide_claw");
+        bucketServo     = myOpMode.hardwareMap.get(Servo.class, "bucket");
+        armServo        = myOpMode.hardwareMap.get(Servo.class, "arm");
+        clawServo       = myOpMode.hardwareMap.get(Servo.class, "claw");
+
+        slideClawServo.setPosition(SLIDE_CLAW_OPEN);
+        bucketServo.setPosition(BUCKET_UP);
+        armServo.setPosition(ARM_DOWN);
+        clawServo.setPosition(CLAW_OPEN);
 
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
