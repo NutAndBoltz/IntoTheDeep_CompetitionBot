@@ -3,8 +3,9 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
+/*
 @Autonomous(name="AutonomousMode", group="Robot")
+
 public class AutonomousMode extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware(this);
@@ -25,9 +26,9 @@ public class AutonomousMode extends LinearOpMode {
 
         if (opModeIsActive()) {
             // Step 1: Close Linear Slide Claw
-            sleep(3000);
-            robot.slideClawServo.setPosition(robot.SLIDE_CLAW_CLOSED);
-            sleep(500);
+            // sleep(3000);
+            // robot.slideClawServo.setPosition(robot.SLIDE_CLAW_CLOSED);
+            // sleep(500);
 
             // Step 2: Go Forward
             driveForward(1.0);
@@ -128,4 +129,6 @@ public class AutonomousMode extends LinearOpMode {
         robot.backLeftDrive.setPower(0);
         robot.backRightDrive.setPower(0);
     }
+
 }
+ */

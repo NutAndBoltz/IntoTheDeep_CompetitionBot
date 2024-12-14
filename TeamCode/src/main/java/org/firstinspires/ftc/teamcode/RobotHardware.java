@@ -33,19 +33,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/*
- * This file works in conjunction with the External Hardware Class sample called: ConceptExternalHardwareClass.java
- * Please read the explanations in that Sample about how to use this class definition.
- *
- * This file defines a Java Class that performs all the setup and configuration for a sample robot's hardware (motors and sensors).
- * It assumes three motors (left_drive, right_drive and arm) and two servos (left_hand and right_hand)
- *
- * This one file/class can be used by ALL of your OpModes without having to cut & paste the code each time.
- */
-
 public class RobotHardware {
 
-    /* Declare OpMode members. */
+    // Declare OpMode members.
     private LinearOpMode myOpMode = null;   // gain access to methods in the calling OpMode.
 
     // Define Motor and Servo objects  (Make them private so they can't be accessed externally)
@@ -58,15 +48,18 @@ public class RobotHardware {
     public Servo bucketServo        = null;
     public Servo armServo           = null;
     public Servo clawServo          = null;
+    public Servo wristServo         = null;
 
-    public static final double SLIDE_CLAW_OPEN    = 0.1;
-    public static final double SLIDE_CLAW_CLOSED  = 0.4;
+    public static final double SLIDE_CLAW_OPEN    = 0.01;
+    public static final double SLIDE_CLAW_CLOSED  = 0.8;
     public static final double BUCKET_UP          = 0.8;
     public static final double BUCKET_DOWN        = 0.2;
-    public static final double ARM_UP             = 0.9;
-    public static final double ARM_DOWN           = 0.1;
-    public static final double CLAW_OPEN          = 0.7;
-    public static final double CLAW_CLOSED        = 0.3;
+    public static final double ARM_UP             = 0.1;
+    public static final double ARM_DOWN           = 0.35;
+    public static final double CLAW_OPEN          = 0.01;
+    public static final double CLAW_CLOSED        = 0.6;
+    public static final double WRIST_UP           = 0.9;
+    public static final double WRIST_DOWN         = 0.5;
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode) {
@@ -96,16 +89,17 @@ public class RobotHardware {
         linearSlide.setDirection(DcMotor.Direction.FORWARD);
 
         // Define and initialize ALL installed servos.
-
         slideClawServo  = myOpMode.hardwareMap.get(Servo.class, "slide_claw");
         bucketServo     = myOpMode.hardwareMap.get(Servo.class, "bucket");
         armServo        = myOpMode.hardwareMap.get(Servo.class, "arm");
         clawServo       = myOpMode.hardwareMap.get(Servo.class, "claw");
+        wristServo      = myOpMode.hardwareMap.get(Servo.class, "wrist");
 
         slideClawServo.setPosition(SLIDE_CLAW_OPEN);
         bucketServo.setPosition(BUCKET_UP);
         armServo.setPosition(ARM_DOWN);
         clawServo.setPosition(CLAW_OPEN);
+        wristServo.setPosition(WRIST_DOWN);
 
         myOpMode.telemetry.addData(">", "Hardware Initialized");
         myOpMode.telemetry.update();
