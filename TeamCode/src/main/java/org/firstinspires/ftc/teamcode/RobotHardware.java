@@ -52,8 +52,8 @@ public class RobotHardware {
 
     public static final double SLIDE_CLAW_OPEN    = 0.01;
     public static final double SLIDE_CLAW_CLOSED  = 0.8;
-    public static final double BUCKET_UP          = 0.8;
-    public static final double BUCKET_DOWN        = 0.2;
+    public static final double BUCKET_UP          = 0.9;
+    public static final double BUCKET_DOWN        = 0.1;
     public static final double ARM_UP             = 0.1;
     public static final double ARM_DOWN           = 0.35;
     public static final double CLAW_OPEN          = 0.01;

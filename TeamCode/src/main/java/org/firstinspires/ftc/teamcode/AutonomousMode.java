@@ -3,9 +3,8 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-/*
-@Autonomous(name="AutonomousMode", group="Robot")
 
+@Autonomous(name="AutonomousMode", group="Robot")
 public class AutonomousMode extends LinearOpMode {
 
     RobotHardware robot = new RobotHardware(this);
@@ -14,6 +13,7 @@ public class AutonomousMode extends LinearOpMode {
     static final double FORWARD_SPEED = 0.5;
     static final double TURN_SPEED = 0.5;
     static final double ARM_SPEED = 0.5;
+    static final double LINEAR_SLIDE_SPEED = 0.7;
 
     @Override
     public void runOpMode() {
@@ -25,57 +25,42 @@ public class AutonomousMode extends LinearOpMode {
         waitForStart();
 
         if (opModeIsActive()) {
-            // Step 1: Close Linear Slide Claw
-            // sleep(3000);
-            // robot.slideClawServo.setPosition(robot.SLIDE_CLAW_CLOSED);
-            // sleep(500);
-
-            // Step 2: Go Forward
+            // Step 1: Drive forward
             driveForward(1.0);
 
-            // Step 3: Lift Arm
-            robot.armServo.setPosition(robot.ARM_UP);
-            sleep(1000);
+            // Step 2: Bring the linear slide up
+            moveLinearSlide(LINEAR_SLIDE_SPEED, 2.0);
 
-            // Step 4: Go Forward just a little bit more
+            // Step 3: Drive forward a little more
             driveForward(0.3);
 
-            // Step 5: Lower Arm a little
-            robot.armServo.setPosition(robot.ARM_UP - 0.1);
-            sleep(500);
+            // Step 4: Bring the linear slide down (to attach specimen)
+            moveLinearSlide(-LINEAR_SLIDE_SPEED, 1.5);
 
-            // Step 6: Open Linear Slide Claw
+            // Step 5: Open the claw to release the specimen
             robot.slideClawServo.setPosition(robot.SLIDE_CLAW_OPEN);
-            sleep(500);
+            sleep(500); // Wait for the claw to open
 
-            // Step 7: Go Backwards just a little bit
+            // Step 6: Drive backwards slightly
             driveBackward(0.3);
 
-            // Step 8: Strafe Right
+            // Step 7: Strafe right
             strafeRight(1.0);
 
-            // Step 9: Go Forward a little
-            driveForward(0.5);
-
-            // Step 10: Strafe Right a little
-            strafeRight(0.5);
-
-            // Steps 11-16: Push Blocks Back and Go Forward (3 times)
+            // Steps 8-10: Perform block movement pattern 3 times
             for (int i = 0; i < 3; i++) {
-                // Push Blocks Back
-                driveBackward(1.0);
+                // Move forward a little
+                driveForward(0.3);
 
-                // Go Forwards
-                driveForward(1.0);
+                // Move right a little
+                strafeRight(0.3);
 
-                // Strafe Right a little
-                if (i < 2) {
-                    strafeRight(0.5);
-                }
+                // Move backward a little
+                driveBackward(0.3);
+
+                // Small pause between iterations
+                sleep(200);
             }
-
-            // Step 17: Go Backwards
-            driveBackward(1.0);
 
             telemetry.addData("Path", "Complete");
             telemetry.update();
@@ -83,41 +68,26 @@ public class AutonomousMode extends LinearOpMode {
         }
     }
 
-    // Helper methods for movement
     private void driveForward(double time) {
-        robot.frontLeftDrive.setPower(FORWARD_SPEED);
-        robot.frontRightDrive.setPower(FORWARD_SPEED);
-        robot.backLeftDrive.setPower(FORWARD_SPEED);
-        robot.backRightDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < time)) {
-            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        stopRobot();
+        setDrivePowers(FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, FORWARD_SPEED, time);
     }
 
     private void driveBackward(double time) {
-        robot.frontLeftDrive.setPower(-FORWARD_SPEED);
-        robot.frontRightDrive.setPower(-FORWARD_SPEED);
-        robot.backLeftDrive.setPower(-FORWARD_SPEED);
-        robot.backRightDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < time)) {
-            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        stopRobot();
+        setDrivePowers(-FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, time);
     }
 
     private void strafeRight(double time) {
-        robot.frontLeftDrive.setPower(FORWARD_SPEED);
-        robot.frontRightDrive.setPower(-FORWARD_SPEED);
-        robot.backLeftDrive.setPower(-FORWARD_SPEED);
-        robot.backRightDrive.setPower(FORWARD_SPEED);
+        setDrivePowers(FORWARD_SPEED, -FORWARD_SPEED, -FORWARD_SPEED, FORWARD_SPEED, time);
+    }
+
+    private void setDrivePowers(double fl, double fr, double bl, double br, double time) {
+        robot.frontLeftDrive.setPower(fl);
+        robot.frontRightDrive.setPower(fr);
+        robot.backLeftDrive.setPower(bl);
+        robot.backRightDrive.setPower(br);
         runtime.reset();
         while (opModeIsActive() && (runtime.seconds() < time)) {
-            telemetry.addData("Path", "Leg 1: %2.5f S Elapsed", runtime.seconds());
+            telemetry.addData("Path", "Elapsed Time: %2.5f S", runtime.seconds());
             telemetry.update();
         }
         stopRobot();
@@ -130,5 +100,13 @@ public class AutonomousMode extends LinearOpMode {
         robot.backRightDrive.setPower(0);
     }
 
+    private void moveLinearSlide(double power, double time) {
+        robot.linearSlide.setPower(power);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < time)) {
+            telemetry.addData("Linear Slide", "Moving: %2.5f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        robot.linearSlide.setPower(0);
+    }
 }
- */
