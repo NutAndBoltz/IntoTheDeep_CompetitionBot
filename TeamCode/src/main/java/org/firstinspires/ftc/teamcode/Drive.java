@@ -9,7 +9,7 @@ public class Drive extends LinearOpMode {
 
     // Define drive speed
     public static final double DRIVE_SPEED = 0.6;
-    public static final double LINEAR_SLIDE_SPEED = 0.6;
+    public static final double LINEAR_SLIDE_SPEED = 0.7;
     public static final double ARM_SPEED = 0.06;
     public static final double WRIST_SPEED = 0.02;
 

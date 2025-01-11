@@ -59,7 +59,7 @@ public class RobotHardware {
     public static final double CLAW_OPEN          = 0.01;
     public static final double CLAW_CLOSED        = 0.6;
     public static final double WRIST_UP           = 1.0;
-    public static final double WRIST_DOWN         = 0.5;
+    public static final double WRIST_DOWN         = 0.1;
 
     // Define a constructor that allows the OpMode to pass a reference to itself.
     public RobotHardware(LinearOpMode opmode) {
@@ -106,4 +106,4 @@ public class RobotHardware {
     }
 }
 
-// hi swavam was here
+// hi swavam was here 
