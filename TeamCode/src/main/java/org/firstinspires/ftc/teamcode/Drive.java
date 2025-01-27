@@ -33,13 +33,9 @@ public class Drive extends LinearOpMode {
         double horizontal;
         double turn;
 
-        // Initialize all the hardware
         robot.init();
-
-        // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
             // Mecanum drive controls with deadzone and exponential control

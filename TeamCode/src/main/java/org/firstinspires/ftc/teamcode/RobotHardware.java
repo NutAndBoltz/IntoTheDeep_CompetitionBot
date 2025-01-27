@@ -50,13 +50,13 @@ public class RobotHardware {
     public Servo clawServo          = null;
     public Servo wristServo         = null;
 
-    public static final double SLIDE_CLAW_OPEN    = 0.01;
-    public static final double SLIDE_CLAW_CLOSED  = 0.8;
-    public static final double BUCKET_UP          = 0.9;
-    public static final double BUCKET_DOWN        = 0.1;
+    public static final double SLIDE_CLAW_OPEN    = 0;
+    public static final double SLIDE_CLAW_CLOSED  = 0.5;
+    public static final double BUCKET_UP          = 0.1;
+    public static final double BUCKET_DOWN        = 0.9;
     public static final double ARM_UP             = 0.1;
     public static final double ARM_DOWN           = 0.35;
-    public static final double CLAW_OPEN          = 0.01;
+    public static final double CLAW_OPEN          = 0;
     public static final double CLAW_CLOSED        = 0.6;
     public static final double WRIST_UP           = 1.0;
     public static final double WRIST_DOWN         = 0.1;
@@ -79,26 +79,22 @@ public class RobotHardware {
         backRightDrive  = myOpMode.hardwareMap.get(DcMotor.class, "BR_drive");
         linearSlide     = myOpMode.hardwareMap.get(DcMotor.class, "linear_slide");
 
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // Pushing the left stick forward MUST make robot go forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
         frontLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         backLeftDrive.setDirection(DcMotor.Direction.REVERSE);
         frontRightDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.FORWARD);
         linearSlide.setDirection(DcMotor.Direction.FORWARD);
 
-        // Define and initialize ALL installed servos.
         slideClawServo  = myOpMode.hardwareMap.get(Servo.class, "slide_claw");
         bucketServo     = myOpMode.hardwareMap.get(Servo.class, "bucket");
         armServo        = myOpMode.hardwareMap.get(Servo.class, "arm");
         clawServo       = myOpMode.hardwareMap.get(Servo.class, "claw");
         wristServo      = myOpMode.hardwareMap.get(Servo.class, "wrist");
 
-        slideClawServo.setPosition(SLIDE_CLAW_OPEN);
+        slideClawServo.setPosition(SLIDE_CLAW_CLOSED);
         bucketServo.setPosition(BUCKET_UP);
-        armServo.setPosition(ARM_DOWN);
-        clawServo.setPosition(CLAW_OPEN);
+        armServo.setPosition(0.5);
+        clawServo.setPosition(CLAW_CLOSED);
         wristServo.setPosition(WRIST_DOWN);
 
         myOpMode.telemetry.addData(">", "Hardware Initialized");
